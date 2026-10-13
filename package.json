@@ -1,0 +1,12 @@
+{
+  "name": "ming-long-editor",
+  "version": "0.1.0",
+  "description": "A framework-free long-form Markdown editor with image hosting, PDF attachments, import, preview sync and fullscreen writing.",
+  "license": "MIT",
+  "author": "MiNgHZ",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/smoke.mjs"
+  },
+  "keywords": ["markdown", "editor", "cms", "image-hosting", "pdf", "fullscreen"]
+}

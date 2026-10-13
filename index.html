@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ming Long Editor · Demo</title>
+  <link rel="stylesheet" href="../src/ming-long-editor.css">
+  <style>
+    :root { color-scheme: light; }
+    body { margin: 0; background: #f5f7fa; color: #1f2937; }
+    main { width: min(1180px, calc(100% - 36px)); margin: 0 auto; padding: 46px 0 80px; }
+    .masthead { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 30px; }
+    .masthead h1 { margin: 0; font-size: clamp(1.8rem, 4vw, 3.2rem); letter-spacing: -.04em; }
+    .masthead p { max-width: 560px; margin: 10px 0 0; color: #687386; }
+    .demo-status { min-height: 24px; margin: 14px 0 0; color: #59799d; font-size: .86rem; }
+    .demo-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 22px; }
+    .demo-actions button { padding: 9px 13px; border: 1px solid #c7d0dc; border-radius: 8px; background: #fff; color: #1f2937; cursor: pointer; }
+    .demo-actions button:hover { border-color: #59799d; background: #e4edf7; }
+    @media(max-width:760px) { main { width: min(100% - 24px, 680px); padding-top: 26px; } .masthead { display:block; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="masthead">
+      <div>
+        <h1>写长一点。</h1>
+        <p>Markdown、图床、PDF 附件和预览同步在一个编辑器里。这个示例使用浏览器内存模拟上传接口，不会把文件发送到任何服务器。</p>
+      </div>
+      <span aria-hidden="true">MING / LONG EDITOR</span>
+    </header>
+    <div id="editor"></div>
+    <div class="demo-actions">
+      <button id="save" type="button">读取当前 Markdown</button>
+      <button id="reset" type="button">恢复示例内容</button>
+    </div>
+    <p class="demo-status" id="status" role="status" aria-live="polite"></p>
+    <pre id="output" hidden></pre>
+  </main>
+  <script src="../src/ming-markdown-renderer.js"></script>
+  <script src="../src/ming-markdown-import.js"></script>
+  <script src="../src/ming-editor-core.js"></script>
+  <script src="../src/ming-long-editor.js"></script>
+  <script>
+    const initial = '# 一篇可以慢慢写的文章\n\n这里是正文。试试右侧的速查表、Markdown 文件导入，或者打开图床与 PDF 附件。\n\n## 预览同步\n\n在编辑器里写到任意一行，再点击预览，切回编辑时会回到对应位置。';
+    const images = [];
+    const pdfs = [];
+    const status = document.querySelector('#status');
+    const output = document.querySelector('#output');
+    const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    const media = {
+      async uploadImage(payload) {
+        await wait(120);
+        const url = `data:image/webp;base64,${payload.data}`;
+        const asset = { url, name: payload.name || `image-${Date.now()}.webp`, label: payload.name || '演示图片', createdAt: Date.now() };
+        images.unshift(asset); return { ok: true, json: { url: asset.url, name: asset.name } };
+      },
+      async listImages() { return { ok: true, json: { images } }; },
+      async deleteImage(asset) { const i = images.findIndex(item => item.name === asset.name); if (i >= 0) images.splice(i, 1); return { ok: true, json: {} }; },
+      async uploadPdf(payload) {
+        await wait(120);
+        const asset = { url: `data:application/pdf;base64,${payload.data}`, path: payload.name, name: payload.name, label: payload.name, size: 0, createdAt: Date.now() };
+        pdfs.unshift(asset); return { ok: true, json: { pdfs: [asset] } };
+      },
+      async listPdfs() { return { ok: true, json: { pdfs } }; },
+      async deletePdf(asset) { const i = pdfs.findIndex(item => item.name === asset.name); if (i >= 0) pdfs.splice(i, 1); return { ok: true, json: {} }; }
+    };
+    const editor = MingLongEditor.mount('#editor', {
+      value: initial,
+      media,
+      onToast(message) { status.textContent = message; },
+      onChange(value) { status.textContent = `当前正文 ${value.length} 字`; }
+    });
+    document.querySelector('#save').addEventListener('click', () => {
+      output.hidden = false; output.textContent = editor.getValue(); status.textContent = '已读取当前 Markdown（演示未写入服务器）';
+    });
+    document.querySelector('#reset').addEventListener('click', () => { editor.setValue(initial); output.hidden = true; status.textContent = '已恢复示例内容'; });
+  </script>
+</body>
+</html>

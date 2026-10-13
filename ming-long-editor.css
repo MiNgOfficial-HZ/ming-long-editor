@@ -1,0 +1,87 @@
+/* Ming Long Editor · self-contained visual layer */
+.ming-long-editor {
+  --ink: #1f2937; --muted: #687386; --line: #dce3eb; --line-strong: #c7d0dc;
+  --bg: #f5f7fa; --bg-2: #eef2f6; --surface: #fff; --surface-2: #e8edf3;
+  --accent: #59799d; --accent-soft: #e4edf7; --danger: #b65454;
+  color: var(--ink); font: 15px/1.7 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.ming-long-editor *, .ming-long-editor *::before, .ming-long-editor *::after { box-sizing: border-box; }
+.ming-long-editor .md-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 14px; align-items: start; }
+.ming-long-editor .md-box { border: 1px solid var(--line-strong); border-radius: 14px; overflow: hidden; background: var(--bg-2); }
+.ming-long-editor .md-tabs { display: flex; align-items: center; gap: 4px; padding: 7px; border-bottom: 1px solid var(--line); }
+.ming-long-editor .m-tab { flex: 0 1 auto; border: 0; border-radius: 8px; padding: 7px 13px; background: transparent; color: var(--muted); font: inherit; font-size: .82rem; cursor: pointer; transition: background .16s, color .16s; }
+.ming-long-editor .m-tab:hover { color: var(--ink); background: var(--surface-2); }
+.ming-long-editor .m-tab.on { color: var(--ink); background: var(--surface); box-shadow: 0 1px 3px rgb(20 36 52 / 10%); }
+.ming-long-editor .md-fullscreen-btn { margin-left: auto; }
+.ming-long-editor .md-position { margin-left: 4px; padding-right: 9px; color: var(--muted); font: .75rem ui-monospace, monospace; white-space: nowrap; }
+.ming-long-editor .md-input { display: block; width: 100%; min-height: 300px; resize: vertical; border: 0; outline: 0; padding: 16px 18px; background: transparent; color: var(--ink); font: .92rem/1.85 ui-monospace, SFMono-Regular, Consolas, monospace; }
+.ming-long-editor .md-preview { min-height: 300px; padding: 18px 20px; overflow: auto; background: var(--surface); }
+.ming-long-editor .md-file-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+.ming-long-editor .btn { border: 1px solid var(--line-strong); border-radius: 8px; padding: 7px 11px; background: var(--surface); color: var(--ink); font: inherit; font-size: .8rem; cursor: pointer; }
+.ming-long-editor .btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+.ming-long-editor .btn-soft { background: var(--accent-soft); border-color: transparent; }
+.ming-long-editor .btn-ghost { background: transparent; }
+.ming-long-editor .btn-small { padding: 6px 9px; font-size: .76rem; }
+.ming-long-editor .md-import-mode { max-width: 130px; padding: 7px 8px; border: 1px solid var(--line-strong); border-radius: 7px; background: var(--surface); color: var(--ink); font: inherit; font-size: .78rem; }
+.ming-long-editor .field-hint { color: var(--muted); font-size: .74rem; }
+.ming-long-editor .md-help { max-height: 390px; overflow: auto; padding: 12px 10px 10px; border: 1px solid var(--line-strong); border-radius: 14px; background: var(--bg-2); }
+.ming-long-editor .md-help-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 0 6px 8px; border-bottom: 1px dashed var(--line); font-size: .8rem; font-weight: 700; }
+.ming-long-editor .md-help-head small { color: var(--muted); font-size: .7rem; font-weight: 400; }
+.ming-long-editor .md-sym { display: flex; align-items: center; gap: 8px; width: 100%; padding: 6px; border: 0; border-radius: 8px; background: transparent; color: var(--ink); text-align: left; cursor: pointer; }
+.ming-long-editor .md-sym:hover { background: var(--accent-soft); color: var(--accent); }
+.ming-long-editor .md-sym code { min-width: 86px; color: inherit; font-size: .72rem; }
+.ming-long-editor .md-sym span { color: var(--muted); font-size: .74rem; }
+.ming-long-editor .md-help-note { margin: 9px 6px 0; color: var(--muted); font-size: .72rem; }
+.ming-long-editor .md-media, .ming-long-editor .md-pdf { padding: 12px 14px; border-top: 1px solid var(--line); }
+.ming-long-editor .md-media summary, .ming-long-editor .md-pdf summary { cursor: pointer; font-size: .83rem; font-weight: 650; }
+.ming-long-editor .md-media summary span, .ming-long-editor .md-pdf summary span { margin-left: 7px; color: var(--muted); font-size: .73rem; font-weight: 400; }
+.ming-long-editor .md-media-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
+.ming-long-editor .md-media-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; max-height: 250px; overflow: auto; margin-top: 10px; }
+.ming-long-editor .md-media-card { overflow: hidden; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
+.ming-long-editor .md-media-card img { display: block; width: 100%; height: 84px; object-fit: cover; }
+.ming-long-editor .md-media-meta { padding: 6px 8px 0; color: var(--muted); font-size: .68rem; }
+.ming-long-editor .md-media-actions { display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; }
+.ming-long-editor .md-media-actions button, .ming-long-editor .md-media-confirm button, .ming-long-editor .md-upload-row button { padding: 4px 6px; border: 1px solid var(--line); border-radius: 5px; background: transparent; color: var(--ink); font: inherit; font-size: .7rem; cursor: pointer; }
+.ming-long-editor .md-media-actions button:hover { border-color: var(--accent); color: var(--accent); }
+.ming-long-editor .md-media-confirm { padding: 0 8px 8px; color: var(--muted); font-size: .7rem; }
+.ming-long-editor .md-media-confirm p { margin: 0 0 5px; }
+.ming-long-editor .md-upload-row { display: flex; align-items: center; gap: 8px; padding-top: 8px; font-size: .75rem; }
+.ming-long-editor .md-upload-row span { flex: 1; overflow-wrap: anywhere; }
+.ming-long-editor .md-pdf-list { display: grid; gap: 7px; max-height: 230px; overflow: auto; margin-top: 10px; }
+.ming-long-editor .md-pdf-card { display: flex; align-items: center; gap: 9px; padding: 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.ming-long-editor .md-pdf-card.is-selected { border-color: var(--accent); background: var(--accent-soft); }
+.ming-long-editor .md-pdf-icon { display: grid; place-items: center; flex: 0 0 auto; width: 34px; height: 38px; border-radius: 5px; background: #a74747; color: #fff; font-size: .62rem; font-weight: 800; }
+.ming-long-editor .md-pdf-meta { min-width: 0; flex: 1; display: grid; gap: 2px; }
+.ming-long-editor .md-pdf-meta strong { overflow: hidden; color: var(--ink); font-size: .76rem; text-overflow: ellipsis; white-space: nowrap; }
+.ming-long-editor .md-pdf-meta span { color: var(--muted); font-size: .67rem; }
+.ming-long-editor .md-body { color: var(--ink); }
+.ming-long-editor .md-body p { margin: 0 0 1em; line-height: 1.85; }
+.ming-long-editor .md-body h1, .ming-long-editor .md-body h2, .ming-long-editor .md-body h3, .ming-long-editor .md-body h4, .ming-long-editor .md-body h5, .ming-long-editor .md-body h6 { margin: 1.25em 0 .5em; line-height: 1.35; }
+.ming-long-editor .md-body h1 { font-size: 1.65rem; } .ming-long-editor .md-body h2 { font-size: 1.35rem; } .ming-long-editor .md-body h3 { font-size: 1.16rem; }
+.ming-long-editor .md-body h4 { font-size: 1.02rem; } .ming-long-editor .md-body h5 { font-size: .94rem; } .ming-long-editor .md-body h6 { color: var(--muted); font-size: .88rem; }
+.ming-long-editor .md-body a { color: var(--accent); } .ming-long-editor .md-body img { max-width: 100%; border-radius: 8px; }
+.ming-long-editor .md-body blockquote { margin: 1em 0; padding: .7em 1em; border-left: 3px solid var(--accent); background: var(--accent-soft); color: var(--muted); }
+.ming-long-editor .md-body pre { overflow: auto; padding: 12px 14px; border-radius: 8px; background: #1f2630; color: #eef3f8; }
+.ming-long-editor .md-body code { font: .88em ui-monospace, SFMono-Regular, Consolas, monospace; } .ming-long-editor .md-body :not(pre) > code { padding: .1em .3em; border-radius: 4px; background: var(--bg-2); }
+.ming-long-editor .md-body table { width: 100%; margin: 1em 0; border-collapse: collapse; } .ming-long-editor .md-body th, .ming-long-editor .md-body td { padding: 7px 9px; border: 1px solid var(--line); text-align: left; }
+.ming-long-editor .md-body mark { padding: .05em .14em; border-radius: 3px; background: #f3dfa0; } .ming-long-editor .md-body li { margin: .25em 0; }
+.ming-long-editor .md-body .math-pending { color: var(--accent); }
+.md-fullscreen-open { overflow: hidden; }
+.ming-long-editor .md-box.md-is-fullscreen { position: fixed; inset: 0; z-index: 1300; width: 100vw; height: 100dvh; max-height: none; display: flex; flex-direction: column; overflow: hidden; border: 0; border-radius: 0; background: var(--bg-2); box-shadow: none; }
+.ming-long-editor .md-wrap.md-wrap-is-fullscreen .md-help { display: none; }
+.ming-long-editor .md-box.md-is-fullscreen > .md-tabs, .ming-long-editor .md-box.md-is-fullscreen > .md-file-tools, .ming-long-editor .md-box.md-is-fullscreen > .md-media, .ming-long-editor .md-box.md-is-fullscreen > .md-pdf { flex: 0 0 auto; padding-right: max(18px, calc((100vw - 1180px) / 2)); padding-left: max(18px, calc((100vw - 1180px) / 2)); }
+.ming-long-editor .md-box.md-is-fullscreen > .md-input, .ming-long-editor .md-box.md-is-fullscreen > .md-preview { flex: 1 1 0; min-height: 0; height: auto !important; max-height: none; padding: 28px max(22px, calc((100vw - 1040px) / 2)); border: 0; border-radius: 0; }
+.ming-long-editor .md-box.md-is-fullscreen > .md-input { resize: none; } .ming-long-editor .md-box.md-is-fullscreen > .md-preview { overflow: auto; }
+.ming-long-editor .md-box.md-is-fullscreen > .md-media, .ming-long-editor .md-box.md-is-fullscreen > .md-pdf { max-height: 30vh; overflow: auto; }
+@media (prefers-color-scheme: dark) {
+  .ming-long-editor { --ink: #e7edf4; --muted: #9da9b8; --line: #354252; --line-strong: #455466; --bg: #111821; --bg-2: #1a2430; --surface: #202c39; --surface-2: #2b3949; --accent: #9db9d8; --accent-soft: #26394d; }
+  .ming-long-editor .md-body mark { background: #625126; color: #f3e9ce; }
+}
+@media (max-width: 760px) {
+  .ming-long-editor .md-wrap { grid-template-columns: 1fr; }
+  .ming-long-editor .md-help { max-height: none; }
+  .ming-long-editor .md-media-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ming-long-editor .md-tabs .md-fullscreen-btn { font-size: 0; }
+  .ming-long-editor .md-tabs .md-fullscreen-btn::first-letter { font-size: .95rem; }
+  .ming-long-editor .md-box.md-is-fullscreen > .md-input, .ming-long-editor .md-box.md-is-fullscreen > .md-preview { padding: 20px 16px; }
+}
